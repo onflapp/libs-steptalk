@@ -177,6 +177,14 @@ const char *STExecutorCommonOptions =
     if( [manager fileExistsAtPath:file isDirectory:NULL] )
     {
         source = [NSString stringWithContentsOfFile:file];
+        if([source hasPrefix:@"#!"])
+        {
+            NSRange r = [source rangeOfString:@"\n"];
+            if (r.location > 0 && r.location < [source length]) 
+            {
+                source = [source substringFromIndex:r.location+1];
+            }
+        }
 
         if(langName)
         {
