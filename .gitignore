@@ -1,0 +1,9 @@
+*.app
+*.o
+*.a
+obj
+derived_src
+*.framework
+*.inspector
+*.bundle
+Languages/Smalltalk/Smalltalk.stlanguage
