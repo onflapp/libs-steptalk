@@ -34,7 +34,7 @@
 #include <AppKit/NSApplication.h>
 
 @interface NSApplication(STApplicationScripting)
-- (BOOL)initializeScripting;
+- (BOOL)initializeApplicationScripting;
 - (BOOL)isScriptingSupported;
 
 /* User interface */

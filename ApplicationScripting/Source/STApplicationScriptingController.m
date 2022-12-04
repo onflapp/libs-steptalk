@@ -32,6 +32,7 @@
 #import <Foundation/NSKeyValueCoding.h>
 
 #import <AppKit/NSApplication.h>
+#import <AppKit/NSMenu.h>
 
 #import <StepTalk/STBundleInfo.h>
 #import <StepTalk/STEngine.h>
@@ -53,6 +54,8 @@
 
         info = [STBundleInfo infoForBundle:[NSBundle mainBundle]];
         objectRefereceDict = RETAIN([info objectReferenceDictionary]);
+
+        [self createScriptsMenu];
     }
     return self;
 }
@@ -101,6 +104,30 @@
     }
 
     return [target scriptingEnvironment];
+}
+
+- (void)createScriptsMenu
+{
+    NSMenu *mainMenu = [NSApp mainMenu];
+    if (!mainMenu) return;
+
+    NSInteger i = [mainMenu indexOfItemWithTitle:@"Scripts"];
+    if (i > 0) {
+        NSMenuItem *item = [mainMenu itemAtIndex:i];
+        NSMenu *menu = [[NSMenu alloc] initWithTitle:@"Scripts"];
+
+        [menu addItemWithTitle:@"Scripts Panel..." 
+                        action:@selector(orderFrontScriptsPanel:) keyEquivalent:@""];
+        [menu addItemWithTitle:@"Transcript" 
+                        action:@selector(orderFrontTranscriptWindow:) keyEquivalent:@""];
+        [menu addItemWithTitle:@"Do Selection" 
+                        action:@selector(executeSelectionScript:) keyEquivalent:@""];
+        [menu addItemWithTitle:@"Do & Show Selection" 
+                        action:@selector(executeAndShowSelectionScript:) keyEquivalent:@""];
+
+        [item setSubmenu:menu];
+        RELEASE(menu);        
+    }
 }
 
 - (void)setScriptingMenu:(NSMenu *)menu

@@ -145,7 +145,7 @@ STScriptsPanel *sharedScriptsPanel = nil;
 
 - (void)command:(id)sender
 {
-    switch([commandMenu indexOfSelectedItem])
+    switch([sender indexOfSelectedItem])
     {
     case 1: [self update:nil]; break;
     case 2: [self browse:nil]; break;
@@ -161,6 +161,17 @@ STScriptsPanel *sharedScriptsPanel = nil;
     if(script)
     {
         [ws selectFile:[script fileName] inFileViewerRootedAtPath:path];
+    }
+    else
+    {
+        NSString       *path = [[scriptsManager scriptSearchPaths] firstObject];
+        NSFileManager  *manager = [NSFileManager defaultManager];
+        BOOL            isDir;
+
+        if(! [manager fileExistsAtPath:path isDirectory:&isDir]) {
+          [manager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:NULL];
+        }
+        [ws selectFile:path inFileViewerRootedAtPath:@"/"];
     }
 }
 
@@ -211,17 +222,22 @@ STScriptsPanel *sharedScriptsPanel = nil;
 }
 - (void)showHelp:(id)sender
 {
-	NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-	NSString *file;
+    NSBundle *bundle = [NSBundle mainBundle];
+    NSString *file = [bundle pathForResource: @"ApplicationScripting" 
+                                      ofType: @"xlp"]; 
     
-    file = [bundle pathForResource: @"ApplicationScripting" 
-                            ofType: @"xlp"]; 
- 
-	if (file) 
+    if (!file)
     {
-		[[NSWorkspace sharedWorkspace] openFile: file];
-		return;
-   	}
+        bundle = [NSBundle bundleForClass:[self class]];
+        file = [bundle pathForResource: @"ApplicationScripting" 
+                            ofType: @"xlp"];
+    }
+
+    if (file) 
+    {
+        [[NSWorkspace sharedWorkspace] openFile: file];
+        return;
+    }
     else
     {
         NSBeep();

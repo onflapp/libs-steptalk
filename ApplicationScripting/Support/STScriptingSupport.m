@@ -174,6 +174,10 @@
     return retval;
 }
 
+/* 
+ * doesn't work as it used to, maybe this is due to new runtime?
+ * in any case, this should not been needed as we initilized the scripting in the delegate
+ *
 - (void)orderFrontScriptsPanel:(id)sender
 {
     [self _loadAppTalkAndRetryAction:_cmd with:sender];
@@ -187,4 +191,5 @@
 {
     return [self _loadAppTalkAndRetryAction:_cmd];
 }
+*/
 @end
