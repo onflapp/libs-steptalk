@@ -31,6 +31,7 @@ ApplicationScripting_OBJC_FILES = \
     NSObject+NibLoading.m  \
     STAppScriptingSupport.m \
     STApplicationScriptingController.m \
+    STAppScriptingProxy.m \
     STEnvironment+additions.m \
     STScriptsPanel.m \
     NSTextView+ScriptExecution.m \

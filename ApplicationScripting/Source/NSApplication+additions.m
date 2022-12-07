@@ -44,6 +44,7 @@
 #import <AppKit/NSPanel.h>
 
 #import "STApplicationScriptingController.h"
+#import "STAppScriptingProxy.h"
 
 static STEnvironment        *scriptingEnvironment = nil;
 static NSMutableSet         *scannedBundles;
@@ -141,6 +142,7 @@ static STApplicationScriptingController *scriptingController = nil;
     [env loadModule:@"AppKit"];
     [env includeBundle:[NSBundle mainBundle]];
     [env setObject:self forName:@"Application"];
+    [env setObject:[STAppScriptingProxy sharedAppScriptingProxy] forName:@"Controller"];
     [env setObject:self forName:[self applicationNameForScripting]];
     [env setObject:[STTranscript sharedTranscript] forName:@"Transcript"];
 
@@ -238,5 +240,9 @@ static STApplicationScriptingController *scriptingController = nil;
 - (STApplicationScriptingController *)scriptingController
 {
     return scriptingController;
+}
+
+- (id) Controller {
+    return [STAppScriptingProxy sharedAppScriptingProxy];
 }
 @end

@@ -1,10 +1,10 @@
 /**
-    NSApplication additions
+    STAppScriptingController
   
-    Copyright (c) 2000 Stefan Urbanek
+    Copyright (c)2022  onflapp
   
-    Written by: Stefan Urbanek <urbanek@host.sk>
-    Date: 2001 Nov 15
+    Written by: onflapp
+    Date: 2022
  
     This file is part of the StepTalk project.
  
@@ -21,27 +21,21 @@
     You should have received a copy of the GNU Lesser General Public
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- 
+
    */
 
+#import <AppKit/AppKit.h>
 
-#import <AppKit/NSApplication.h>
+@interface STAppScriptingProxy : NSObject
+{
+}
++ sharedAppScriptingProxy;
+- (void)activate;
+- (void)terminate;
+- (void)hide;
+- (void)open:(NSString*) file;
+- (void)open;
+- (void)executeMenuAction:(NSString *) name;
+- (NSArray *)windows;
 
-@class STEnvironment;
-@class STApplicationScriptingController;
-
-@interface NSApplication(STAppScriptingAdditions)
-- (STEnvironment *)scriptingEnvironment;
-- (STApplicationScriptingController *)scriptingController;
-
-- (void)orderFrontScriptsPanel:(id)sender;
-- (void)orderFrontTranscriptWindow:(id)sender;
-
-- (NSMenu *)scriptingMenu;
-- (void)setScriptingMenu:(NSMenu *)menu;
-
-- (NSString *)applicationNameForScripting;
-
-/* Application Scripting Proxy, Controller object should be avaiable for any app */
-- (id) Controller;
 @end

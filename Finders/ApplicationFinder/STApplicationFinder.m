@@ -99,15 +99,21 @@
     {
         return nil;
     }
+
+    id app = [self connectApplicationWithName:name];
+    if (app) 
+    {
+        NSDebugLLog(@"STFinder", @"Found running '%@'", name);
+        return app;
+    }
     
-    /* FIXME: We need to add .app extension */
     appName = [name stringByAppendingPathExtension:@"app"];
 
-    NSLog(@"Launching '%@'", name);
+    NSDebugLLog(@"STFinder", @"Launching '%@'", name);
     
     if([[NSWorkspace sharedWorkspace] launchApplication:appName])
     {
-        NSLog(@"Connecting '%@'", name);
+        NSDebugLLog(@"STFinder", @"Connecting '%@'", name);
         return [self connectApplicationWithName:name];
     }
     

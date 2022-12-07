@@ -126,7 +126,7 @@
                         action:@selector(executeAndShowSelectionScript:) keyEquivalent:@""];
 
         [item setSubmenu:menu];
-        RELEASE(menu);        
+        [self setScriptingMenu:menu];
     }
 }
 
