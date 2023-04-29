@@ -38,13 +38,33 @@
 
 #include <stdio.h>
 
+@interface ScriptContext:NSObject
+{
+    NSInteger      exitCode;
+}
+@end
+
+@implementation ScriptContext
+- (void)returnExitCode:(NSInteger) code
+{
+    exitCode = code;
+}
+- (NSInteger)exitCode
+{
+    return exitCode;
+}
+
+@end
+
 @interface Executor:STExecutor
 {
     NSString       *typeName;
     NSString       *environmentName;
     NSString       *hostName;
+    ScriptContext  *scriptContext;
     BOOL            enableFull;
 }
+- (NSInteger)exitCode;
 @end
 
 @implementation Executor
@@ -52,6 +72,8 @@
 {
     STEnvironmentDescription *desc;
     STEnvironment            *environment;
+
+    scriptContext = [[ScriptContext alloc] init];
     
     if(environmentName)
     {
@@ -79,9 +101,10 @@
             environment = [STEnvironment environmentWithDescription:desc];
         }
 
-        /* Register basic objects: Environment, Transcript */
+        /* Register basic objects: Environment, Transcript, Script */
 
         [environment setObject:environment forName:@"Environment"];
+        [environment setObject:scriptContext forName:@"Script"];
         [environment loadModule:@"SimpleTranscript"];
         [environment setCreatesUnknownObjects:YES];
 
@@ -91,11 +114,17 @@
                                                       language:langName];
     }
 }
+- (NSInteger)exitCode
+{
+    return [scriptContext exitCode];
+}
+
 - (void)dealloc
 {
     RELEASE(typeName);
     RELEASE(environmentName);
     RELEASE(hostName);
+    RELEASE(scriptContext);
     
     [super dealloc];
 }
@@ -196,5 +225,5 @@ int main(int argc, const char **argv)
 //printf("%s\n",GSDebugAllocationList(NO));
     RELEASE(pool);
 
-    return 0;
+    return [executor exitCode];
 }

@@ -222,13 +222,13 @@ static STLanguageManager *defaultManager = nil;
 }
 
 /** Returns the name of default scripting language specified by the
-    STDefaultLanguage default. If there is no such default in user's
+    STDefaultLanguageName default. If there is no such default in user's
     defaults database, then Smalltalk is used. */
 
 - (NSString *)defaultLanguage
 {
     NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
-    NSString       *name= [defs objectForKey:@"STDefaultLanguage"];
+    NSString       *name= [defs objectForKey:@"STDefaultLanguageName"];
     
     if(!name)
     {
@@ -348,6 +348,10 @@ static STLanguageManager *defaultManager = nil;
 }
 - (NSString *)languageForFileType:(NSString *)type
 {
-    return [fileTypes objectForKey:type];
+    NSString *lang = [fileTypes objectForKey:type];
+    if (lang) return lang;
+
+    NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+    return [defs objectForKey:@"STDefaultLanguageName"];
 }
 @end
