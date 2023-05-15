@@ -1,0 +1,5 @@
+{
+    ScriptingInfoClass = SystemShellModule;
+    Classes = (
+    );
+}
