@@ -201,6 +201,7 @@ int main(int argc, const char **argv)
     NSArray           *args;
     NSAutoreleasePool *pool;
     NSProcessInfo     *procInfo;
+    int                rv;
 
     pool = [NSAutoreleasePool new];
 
@@ -218,12 +219,21 @@ int main(int argc, const char **argv)
 //GSDebugAllocationActive(YES);
     executor = [[Executor alloc] init];
 
-    args = [procInfo arguments];
-    [executor runWithArguments:args];
+    @try
+    {
+        args = [procInfo arguments];
+        [executor runWithArguments:args];
+        rv = [executor exitCode];
+    }
+    @catch (NSException* ex)
+    {
+        NSLog(@"Script Error: %@", ex);
+        rv = 2;
+    }
     
     RELEASE(executor);
 //printf("%s\n",GSDebugAllocationList(NO));
     RELEASE(pool);
 
-    return [executor exitCode];
+    return rv;
 }

@@ -45,6 +45,7 @@
 
 #import "STApplicationScriptingController.h"
 #import "STAppScriptingProxy.h"
+#import "STAppDelegateProxy.h"
 
 static STEnvironment        *scriptingEnvironment = nil;
 static NSMutableSet         *scannedBundles;
@@ -139,14 +140,19 @@ static STApplicationScriptingController *scriptingController = nil;
         env = [STEnvironment environmentWithDefaultDescription];
     }
 
+    STAppDelegateProxy *approxy = [[STAppDelegateProxy alloc] initWithApp:self]; 
+
     [env loadModule:@"AppKit"];
     [env includeBundle:[NSBundle mainBundle]];
     [env setObject:self forName:@"Application"];
+    [env setObject:env forName:@"Environment"];
     [env setObject:[STAppScriptingProxy sharedAppScriptingProxy] forName:@"Controller"];
-    [env setObject:self forName:[self applicationNameForScripting]];
+    [env setObject:approxy forName:[self applicationNameForScripting]];
     [env setObject:[STTranscript sharedTranscript] forName:@"Transcript"];
 
     scriptingEnvironment = RETAIN(env);
+
+    RELEASE(approxy);
 
     [self updateScriptingInfoFromBundles];
 
@@ -235,7 +241,7 @@ static STApplicationScriptingController *scriptingController = nil;
     return YES;
 }
 
-/** Return object that is responsible for controlling application scriptign 
+/** Return object that is responsible for controlling application scripting 
 */
 - (STApplicationScriptingController *)scriptingController
 {

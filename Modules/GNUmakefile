@@ -42,6 +42,7 @@ SUBPROJECTS = \
     SimpleTranscript \
     Foundation \
     ObjectiveC \
+    SystemShell \
     GDL2 \
     $(APPKIT) \
     $(SQLCLIENT) \
