@@ -38,5 +38,6 @@
 #import <StepTalk/STScripting.h>
 #import <StepTalk/STScriptsManager.h>
 #import <StepTalk/STUndefinedObject.h>
+#import <StepTalk/STValuePointer.h>
 
 #import <StepTalk/NSInvocation+additions.h>

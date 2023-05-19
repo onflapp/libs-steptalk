@@ -29,6 +29,7 @@
 
 #import "STExterns.h"
 #import "STStructure.h"
+#import "STValuePointer.h"
 
 #import <Foundation/NSException.h>
 
@@ -130,5 +131,11 @@
 - sizeWith:(float)h
 {
     return [STStructure structureWithSize:NSMakeSize([self floatValue], h)];
+}
+@end
+
+@implementation NSNumber (STValuePointer)
++ (id) pointerForRange {
+    return [[[STValuePointer alloc] initWithObjCType:@encode(NSRange)] autorelease];
 }
 @end

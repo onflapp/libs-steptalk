@@ -51,6 +51,7 @@ StepTalk_OBJC_FILES = \
     STSelector.m \
     STStructure.m \
     STUndefinedObject.m  \
+    STValuePointer.m \
     NSNumber+additions.m \
     NSObject+additions.m \
     StepTalkScriptingInfo.m
@@ -82,6 +83,7 @@ STEPTALK_HEADER_FILES = \
     STSelector.h \
     STUndefinedObject.h  \
     NSInvocation+additions.h \
+    STValuePointer.h \
     NSObject+additions.h 
 
 StepTalk_HEADER_FILES = $(STEPTALK_HEADER_FILES) \

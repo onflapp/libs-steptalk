@@ -1,12 +1,9 @@
 /**
-    NSNumber-additions.h
-    Various methods for NSNumber
+    NSValuePointer.h
+    Various methods for NSObject
  
     Copyright (c) 2002 Free Software Foundation
  
-    Written by: Stefan Urbanek <urbanek@host.sk>
-    Date: 2000
-   
     This file is part of the StepTalk project.
  
     This library is free software; you can redistribute it and/or
@@ -25,32 +22,26 @@
  
  */
 
-#import <Foundation/NSValue.h>
+#import <Foundation/Foundation.h>
 
-@interface NSNumber (STAdditions)
-- add:(NSNumber *)number;
-- subtract:(NSNumber *)number;
-- multiply:(NSNumber *)number;
-- divide:(NSNumber *)number;
-- (BOOL)isLessThan:(NSNumber *)number;
-- (BOOL)isGreatherThan:(NSNumber *)number;
-- (BOOL)isLessOrEqualThan:(NSNumber *)number;
-- (BOOL)isGreatherOrEqualThan:(NSNumber *)number;
-@end
+@interface STValuePointer : NSObject {
+    const char* _objCType;
+    const char* _objCType_range;
+    const char* _objCType_size;
+    const char* _objCType_rect;
+    const char* _objCType_point;
 
+    NSRange _range;
+    NSSize _size;
+    NSRect _rect;
+    NSPoint _point;
+}
 
-@interface NSNumber (STLogicOperations)
-- (NSUInteger)or:(NSNumber *)number;
-- (NSUInteger)and:(NSNumber *)number;
-- (NSUInteger)not;
-@end
+- (id) initWithObjCType:(const char*) objCType;
+- (void*) pointerValue;
 
-@interface NSNumber (STStructure)
-- rangeWith:(NSUInteger)length;
-- pointWith:(float)y;
-- sizeWith:(float)h;
-@end
-
-@interface NSNumber (STValuePointer)
-+ (id) pointerForRange;
+- (NSRange) rangeValue;
+- (NSSize) sizeValue;
+- (NSRect) rectValue;
+- (NSPoint) pointValue;
 @end

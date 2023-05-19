@@ -172,3 +172,19 @@ handler: message to guarded block.
     guardedBlock handler: handlerBlock.
     
 If exception occures in guarded block, then handler block is evaluated.
+
+5. Working with pointer values
+------------------------------
+
+Create pointer value object for specific type
+    
+    p := NSNumber pointerForRange.
+
+Use pass it to the object
+
+    a attributesAtIndex:0 effectiveRange:p.
+
+Extract the real value
+
+   r := p rangeValue.
+
