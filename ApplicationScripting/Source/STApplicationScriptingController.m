@@ -228,6 +228,13 @@
         return nil;
     }
     
+    id controller = [env objectWithName:@"Controller"];
+    if (controller) 
+    {
+        NSDebugLog(@"Updating currentFileScript");
+        [controller setValue:script forKey:@"currentFileScript"];
+    }
+
     NSDebugLog(@"Updating references");
     [self updateObjectReferences];
 

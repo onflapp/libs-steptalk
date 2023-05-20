@@ -25,9 +25,11 @@
    */
 
 #import <AppKit/AppKit.h>
+#import <StepTalk/STFileScript.h>
 
 @interface STAppScriptingProxy : NSObject
 {
+    STFileScript *currentFileScript;
 }
 + sharedAppScriptingProxy;
 - (void)activate;
@@ -37,5 +39,8 @@
 - (void)open;
 - (void)executeMenuAction:(NSString *) name;
 - (NSArray *)windows;
+
+- (STFileScript *) currentFileScript;
+- (void) setCurrentFileScript:(STFileScript *)fileScript;
 
 @end

@@ -80,7 +80,18 @@ STAppScriptingProxy *sharedAppScriptingProxy = nil;
 
 - (void)dealloc
 {
+    [currentFileScript release];
     [super dealloc];
+}
+
+- (STFileScript *) currentFileScript
+{
+    return currentFileScript;
+}
+
+- (void) setCurrentFileScript:(STFileScript *)fileScript
+{
+    ASSIGN(currentFileScript, fileScript);
 }
 
 - (void)__execScriptInMenu:(id) sender
