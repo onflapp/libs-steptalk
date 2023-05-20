@@ -30,11 +30,13 @@
     const char* _objCType_size;
     const char* _objCType_rect;
     const char* _objCType_point;
+    const char* _objCType_object;
 
     NSRange _range;
     NSSize _size;
     NSRect _rect;
     NSPoint _point;
+    NSObject* _object;
 }
 
 - (id) initWithObjCType:(const char*) objCType;
@@ -44,4 +46,5 @@
 - (NSSize) sizeValue;
 - (NSRect) rectValue;
 - (NSPoint) pointValue;
+- (NSObject*) objectValue;
 @end

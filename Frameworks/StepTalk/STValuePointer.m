@@ -15,8 +15,12 @@
 - (id) initWithObjCType:(const char*) objCType
 {
     self = [super init];
-    _objCType       = objCType;
-    _objCType_range = @encode(NSRange);
+    _objCType        = objCType;
+    _objCType_range  = @encode(NSRange);
+    _objCType_size   = @encode(NSSize);
+    _objCType_rect   = @encode(NSRect);
+    _objCType_point  = @encode(NSPoint);
+    _objCType_object = @encode(NSObject);
 
     _range    = NSMakeRange(0, 0);
     _size     = NSMakeSize(0, 0);
@@ -42,6 +46,10 @@
   else if (_objCType == _objCType_point)
   {
     return &_point;
+  }
+  else if (_objCType == _objCType_object)
+  {
+    return &_object;
   }
   else
   {
@@ -69,5 +77,10 @@
 - (NSPoint) pointValue 
 {
     return _point;
+}
+
+- (NSObject*) objectValue 
+{
+    return _object;
 }
 @end

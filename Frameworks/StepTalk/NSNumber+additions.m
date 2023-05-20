@@ -138,4 +138,16 @@
 + (id) pointerForRange {
     return [[[STValuePointer alloc] initWithObjCType:@encode(NSRange)] autorelease];
 }
++ (id) pointerForSize {
+    return [[[STValuePointer alloc] initWithObjCType:@encode(NSSize)] autorelease];
+}
++ (id) pointerForRect {
+    return [[[STValuePointer alloc] initWithObjCType:@encode(NSRect)] autorelease];
+}
++ (id) pointerForPoint {
+    return [[[STValuePointer alloc] initWithObjCType:@encode(NSPoint)] autorelease];
+}
++ (id) pointerForObject {
+    return [[[STValuePointer alloc] initWithObjCType:@encode(NSObject)] autorelease];
+}
 @end
