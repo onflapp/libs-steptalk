@@ -144,6 +144,7 @@ int complete_handler(int count, int key)
 
 - (void)run
 {
+    NSString *history_file = [@"~/Library/StepTalk/history" stringByExpandingTildeInPath];
     NSString *line;
     id        result;
             
@@ -160,6 +161,7 @@ int complete_handler(int count, int key)
         [self showLine:@"Note: Completion disabled for distant conversation"];
     }    
     
+    read_history([history_file cString]);
     while(1)
     {
         line = [self readLine];
@@ -186,7 +188,7 @@ int complete_handler(int count, int key)
         }
         
     }
-    printf("\n");
+    write_history([history_file cString]);
 }
 - (id)executeLine:(NSString *)line
 {
