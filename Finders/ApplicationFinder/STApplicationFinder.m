@@ -114,7 +114,14 @@
     if([[NSWorkspace sharedWorkspace] launchApplication:appName])
     {
         NSDebugLLog(@"STFinder", @"Connecting '%@'", name);
-        return [self connectApplicationWithName:name];
+        for (NSInteger i = 0; i < 20; i++) {
+            id app = [self connectApplicationWithName:name];
+            if (app) return app;
+
+            NSDebugLLog(@"STFinder", @"try again in 0.2s");
+            NSDate* limit = [NSDate dateWithTimeIntervalSinceNow:0.2];
+            [[NSRunLoop currentRunLoop] runUntilDate: limit];
+        }
     }
     
     return nil;
