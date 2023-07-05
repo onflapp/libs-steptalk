@@ -154,9 +154,14 @@ STAppScriptingProxy *sharedAppScriptingProxy = nil;
 
 }
 
-- (NSArray *)windows 
+- (NSArray *)windows
 {
-    return nil;
+    return [NSApp windows];
+}
+
+- (NSProcessInfo*) processInfo
+{
+    return [NSProcessInfo processInfo];
 }
 
 @end

@@ -39,6 +39,7 @@
 - (void)open;
 - (void)executeMenuAction:(NSString *) name;
 - (NSArray *)windows;
+- (NSProcessInfo*) processInfo;
 
 - (STFileScript *) currentFileScript;
 - (void) setCurrentFileScript:(STFileScript *)fileScript;
