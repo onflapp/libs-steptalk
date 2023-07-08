@@ -1,0 +1,18 @@
+{
+    "## Comment" = "Do NOT change this file, Gorm maintains it";
+    Delegate = {
+	Actions = (
+	    "doSomeAction:"
+	);
+	Outlets = (
+	    textField
+	);
+	Super = NSObject;
+    };
+    FirstResponder = {
+	Actions = (
+	    "doSomeAction:"
+	);
+	Super = NSObject;
+    };
+}
