@@ -33,6 +33,7 @@
 #import <Foundation/NSException.h>
 #import <Foundation/NSMethodSignature.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSKeyValueCoding.h>
 
@@ -206,6 +207,18 @@
         retval = [interpreter interpretMethod:method 
                                   forReceiver:self
                                     arguments:args];
+
+        SEL sel = NSSelectorFromString([method selector]);
+        NSMethodSignature* sign = [[STEnvironment sharedEnvironment] signatureForSelector:sel];
+        if (sign) {
+            const char *type = [sign methodReturnType];
+            if (*type != '@' && [retval isKindOfClass:[NSNumber class]]) {
+                char *nval;
+                STGetValueOfTypeFromObject(&nval, type, retval);
+                retval = nval;
+            }
+        }
+
         RELEASE(args);
     NS_HANDLER
         RETAIN(localException);

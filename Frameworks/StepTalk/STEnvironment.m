@@ -49,6 +49,7 @@
 #import <Foundation/NSInvocation.h>
 
 STEnvironment *sharedEnvironment = nil;
+NSMutableDictionary *selectorTypesCache = nil;
 
 @interface STEnvironment(STPrivateMethods)
 - (STClassInfo *)findClassInfoForObject:(id)anObject;
@@ -179,6 +180,39 @@ STEnvironment *sharedEnvironment = nil;
     bundle = [NSBundle stepTalkBundleWithName:moduleName];
 
     [self includeBundle:bundle];
+}
+
+/**
+    Make protocol with name available for introspection.
+    StepTalk needs to know how to map types for a selector.
+    Objects usually includes this information at runtime, delegates do not.
+    Including protocol is a way to let StepTalk know what these types might be.
+    <ivar>protocolName</ivar>
+*/
+
+- (BOOL) includeProtocol:(NSString *)protocolName
+{
+    if (selectorTypesCache == nil) 
+    {
+        selectorTypesCache = [[NSMutableDictionary alloc] init];
+    }
+
+    Protocol *p = objc_getProtocol([protocolName cString]);
+
+    BOOL found = NO;
+    unsigned int c;
+    struct objc_method_description *list = protocol_copyMethodDescriptionList(p, NO, YES, &c);
+    for (int i = 0; i < c; i++) {
+        struct objc_method_description m = list[i];
+        NSString* name = NSStringFromSelector(m.name);
+        NSString* types = [[[NSString alloc] initWithCString:m.types] autorelease];
+        [selectorTypesCache setValue:types forKey:name];
+        found = YES;
+    }
+
+    if (c) free(list);
+    
+    return found;
 }
 
 /**
@@ -514,6 +548,15 @@ STEnvironment *sharedEnvironment = nil;
 - (void)removeObjectFinderWithName:(NSString *)name
 {
     [objectFinders removeObjectForKey:name];
+}
+
+- (NSMethodSignature *)signatureForSelector:(SEL) selector
+{
+    NSString *name = NSStringFromSelector(selector); 
+    NSString *type = [selectorTypesCache valueForKey:name];
+
+    if (type) return [NSMethodSignature signatureWithObjCTypes:[type cString]];
+    else return nil;
 }
 
 @end

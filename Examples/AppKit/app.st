@@ -1,6 +1,7 @@
 [|
   main
     Environment loadModule:'AppKit'.
+    Environment includeProtocol:'NSApplicationDelegate'.
 
     app := NSApplication sharedApplication.
     app setDelegate:self.

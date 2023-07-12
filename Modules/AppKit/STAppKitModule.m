@@ -27,7 +27,7 @@
 
 #import "STAppKitModule.h"
 
-#import <AppKit/NSApplication.h>
+#import <AppKit/AppKit.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
@@ -40,6 +40,17 @@ extern NSDictionary *STGetAppKitEvents();
 @implementation STAppKitModule
 + (void)initialize
 {
+    id p = nil;
+    p = @protocol(NSApplicationDelegate);
+    p = @protocol(NSWindowDelegate);
+    p = @protocol(NSBrowserDelegate);
+    p = @protocol(NSTableViewDelegate);
+    p = @protocol(NSTextViewDelegate);
+    p = @protocol(NSMenuDelegate);
+    p = @protocol(NSMatrixDelegate);
+    p = @protocol(NSCollectionViewDelegate);
+    p = @protocol(NSAlertDelegate);
+
     [NSApplication sharedApplication];
 }
 

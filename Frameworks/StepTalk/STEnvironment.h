@@ -44,7 +44,7 @@
     NSMutableDictionary      *classes;   /* from description */
 
     NSMutableDictionary      *infoCache;
-    
+ 
     NSMutableDictionary      *objectFinders;
     
     NSMutableArray           *loadedBundles;
@@ -62,6 +62,7 @@
 
 - (void)loadModule:(NSString *)moduleName;
 
+- (BOOL)includeProtocol:(NSString *)protocolName;
 - (BOOL)includeFramework:(NSString *)frameworkName;
 - (BOOL)includeBundle:(NSBundle *)aBundle;
 
@@ -75,4 +76,5 @@
 /** Selector translation */
 
 - (NSString  *)translateSelector:(NSString *)aString forReceiver:(id)anObject;
+- (NSMethodSignature *)signatureForSelector:(SEL) selector;
 @end

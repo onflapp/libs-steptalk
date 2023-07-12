@@ -42,6 +42,7 @@
 #import "STScripting.h"
 #import "STSelector.h"
 #import "STStructure.h"
+#import "STEnvironment.h"
 
 #if 0
 static Class NSNumber_class = nil;
@@ -293,8 +294,12 @@ void STGetValueOfTypeFromObject(void *value, const char *type, id anObject)
     const char *type;
     NSUInteger size;
     void *value;
+    NSMethodSignature *signature = nil;
 
-    type = [[self methodSignature] getArgumentTypeAtIndex:anIndex];
+    signature = [[STEnvironment sharedEnvironment] signatureForSelector:[self selector]];
+    if (!signature) signature = [self methodSignature];
+
+    type = [signature getArgumentTypeAtIndex:anIndex];
     NSGetSizeAndAlignment(type, &size, NULL);
     value = NSZoneMalloc(STMallocZone, size);
 
@@ -310,14 +315,17 @@ void STGetValueOfTypeFromObject(void *value, const char *type, id anObject)
     NSUInteger  size;
     void *value;
     id    object;
+    NSMethodSignature *signature = nil;
+    
+    signature = [[STEnvironment sharedEnvironment] signatureForSelector:[self selector]];
+    if (!signature) signature = [self methodSignature];
 
-    type = [[self methodSignature] getArgumentTypeAtIndex:anIndex];
+    type = [signature getArgumentTypeAtIndex:anIndex];
     NSGetSizeAndAlignment(type, &size, NULL);
     value = NSZoneMalloc(STMallocZone, size);
+
     [self getArgument:value atIndex:anIndex];
-
     object = STObjectFromValueOfType(value, type);
-
     NSZoneFree(STMallocZone, value);
 
     return object;
