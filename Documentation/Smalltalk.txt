@@ -173,6 +173,7 @@ handler: message to guarded block.
     
 If exception occures in guarded block, then handler block is evaluated.
 
+
 5. Working with pointer values
 ------------------------------
 

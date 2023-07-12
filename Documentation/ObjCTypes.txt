@@ -5,3 +5,39 @@ Number types - NSNumber
 char * - NSString
 id, class - no conversion
 structures - STStructure
+
+
+Working with Pointers
+------------------------------------------------
+
+For example:
+
+  "create pointer object"
+  object_pointer := NSNumber pointerForObject.
+
+  "pass the pointer object as a value"
+  str := (NSAttributedString alloc)
+           initWithPath:path 
+     documentAttributes:object_pointer.
+
+  "access actual object (will return NSDictionary)"
+  object_pointer objectValue.
+
+
+You can use the same approach to pass structure pointers
+
+  range_pointer := NSNumber pointerForRange.
+  str attributesAtIndex:1 effectiveRange:p.
+  
+  "get NSRange"
+  range_pointer rangeValue.
+
+
+Create Common Structures
+------------------------------------------------
+
+(1 <> 2) or (NSNumber rangeWith:) "returns NSRange"
+(1 @  2) or (NSNumber pointWith:) "returns NSPoint"
+(1 @@ 2) or (NSNumber sizeWith:)  "returns NSSize"
+
+(10 @ 10) extent: (200 @@ 200) "returns NSRect"
