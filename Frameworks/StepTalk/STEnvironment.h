@@ -76,5 +76,5 @@
 /** Selector translation */
 
 - (NSString  *)translateSelector:(NSString *)aString forReceiver:(id)anObject;
-- (NSMethodSignature *)signatureForSelector:(SEL) selector;
+- (NSMethodSignature *)signatureForSelector:(NSString*) selector;
 @end

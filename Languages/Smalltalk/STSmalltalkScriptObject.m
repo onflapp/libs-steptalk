@@ -208,14 +208,19 @@
                                   forReceiver:self
                                     arguments:args];
 
-        SEL sel = NSSelectorFromString([method selector]);
-        NSMethodSignature* sign = [[STEnvironment sharedEnvironment] signatureForSelector:sel];
+        NSMethodSignature* sign = [environment signatureForSelector:methodName];
         if (sign) {
             const char *type = [sign methodReturnType];
-            if (*type != '@' && [retval isKindOfClass:[NSNumber class]]) {
-                char *nval;
-                STGetValueOfTypeFromObject(&nval, type, retval);
-                retval = nval;
+            if (*type != '@') {
+                if ([retval isKindOfClass:[NSNumber class]]) {
+                    //override the type to proper return type
+                    NSArgumentInfo* ai = (NSArgumentInfo*)[[invocation methodSignature]methodInfo];
+                    ai[0].type = type;
+
+                    void *nval;
+                    STGetValueOfTypeFromObject(&nval, type, retval);
+                    retval = nval;
+                }
             }
         }
 
@@ -232,5 +237,10 @@
 
     [invocation setReturnValue:&retval];
     [pool release];
+}
+
+- (BOOL) implementProtocol:(NSString *)protocolName
+{
+    return [environment includeProtocol:protocolName];
 }
 @end

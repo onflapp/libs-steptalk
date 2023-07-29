@@ -41,3 +41,11 @@ Create Common Structures
 (1 @@ 2) or (NSNumber sizeWith:)  "returns NSSize"
 
 (10 @ 10) extent: (200 @@ 200) "returns NSRect"
+
+
+Import Infomation
+------------------------------------------------
+
+For example:
+
+self importProtocol:'NSApplicationDelegate'

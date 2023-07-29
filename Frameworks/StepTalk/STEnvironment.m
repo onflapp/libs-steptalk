@@ -550,10 +550,9 @@ NSMutableDictionary *selectorTypesCache = nil;
     [objectFinders removeObjectForKey:name];
 }
 
-- (NSMethodSignature *)signatureForSelector:(SEL) selector
+- (NSMethodSignature *)signatureForSelector:(NSString*) selector
 {
-    NSString *name = NSStringFromSelector(selector); 
-    NSString *type = [selectorTypesCache valueForKey:name];
+    NSString *type = [selectorTypesCache valueForKey:selector];
 
     if (type) return [NSMethodSignature signatureWithObjCTypes:[type cString]];
     else return nil;

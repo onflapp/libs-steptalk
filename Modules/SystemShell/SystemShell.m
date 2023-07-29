@@ -67,4 +67,15 @@ static SystemShell *sharedSystemShell;
     return rv;
 }
 
+- (NSString*) readString:(NSString*)path
+{
+    NSFileHandle* fl = nil;
+    if ([path isEqualToString:@"/dev/stdin"]) {
+        fl = [NSFileHandle fileHandleWithStandardInput];
+    }
+
+    NSData* buff = [fl readDataToEndOfFile];
+    return [[[NSString alloc] initWithData:buff encoding:NSUTF8StringEncoding] autorelease];
+}
+
 @end

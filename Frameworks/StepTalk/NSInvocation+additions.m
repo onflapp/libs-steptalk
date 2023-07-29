@@ -295,8 +295,9 @@ void STGetValueOfTypeFromObject(void *value, const char *type, id anObject)
     NSUInteger size;
     void *value;
     NSMethodSignature *signature = nil;
+    NSString* sel = NSStringFromSelector([self selector]);
 
-    signature = [[STEnvironment sharedEnvironment] signatureForSelector:[self selector]];
+    signature = [[STEnvironment sharedEnvironment] signatureForSelector:sel];
     if (!signature) signature = [self methodSignature];
 
     type = [signature getArgumentTypeAtIndex:anIndex];
@@ -316,8 +317,9 @@ void STGetValueOfTypeFromObject(void *value, const char *type, id anObject)
     void *value;
     id    object;
     NSMethodSignature *signature = nil;
+    NSString* sel = NSStringFromSelector([self selector]);
     
-    signature = [[STEnvironment sharedEnvironment] signatureForSelector:[self selector]];
+    signature = [[STEnvironment sharedEnvironment] signatureForSelector:sel];
     if (!signature) signature = [self methodSignature];
 
     type = [signature getArgumentTypeAtIndex:anIndex];

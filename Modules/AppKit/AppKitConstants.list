@@ -444,3 +444,20 @@ NSInteger NSAlertAlternateReturn
 NSInteger NSAlertOtherReturn
 NSInteger NSAlertErrorReturn
 
+# NSWindow
+
+NSInteger NSBorderlessWindowMask
+NSInteger NSTitledWindowMask
+NSInteger NSClosableWindowMask
+NSInteger NSMiniaturizableWindowMask
+NSInteger NSResizableWindowMask
+
+# NSView
+
+NSInteger NSViewNotSizable
+NSInteger NSViewMinXMargin
+NSInteger NSViewWidthSizable
+NSInteger NSViewMaxXMargin
+NSInteger NSViewMinYMargin
+NSInteger NSViewHeightSizable
+NSInteger NSViewMaxYMargin

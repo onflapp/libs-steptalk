@@ -411,6 +411,18 @@ NSDictionary *STGetAppKitConstants(void)
     ADD_NSInteger_OBJECT(NSAlertAlternateReturn,@"NSAlertAlternateReturn");
     ADD_NSInteger_OBJECT(NSAlertOtherReturn,@"NSAlertOtherReturn");
     ADD_NSInteger_OBJECT(NSAlertErrorReturn,@"NSAlertErrorReturn");
+    ADD_NSInteger_OBJECT(NSBorderlessWindowMask,@"NSBorderlessWindowMask");
+    ADD_NSInteger_OBJECT(NSTitledWindowMask,@"NSTitledWindowMask");
+    ADD_NSInteger_OBJECT(NSClosableWindowMask,@"NSClosableWindowMask");
+    ADD_NSInteger_OBJECT(NSMiniaturizableWindowMask,@"NSMiniaturizableWindowMask");
+    ADD_NSInteger_OBJECT(NSResizableWindowMask,@"NSResizableWindowMask");
+    ADD_NSInteger_OBJECT(NSViewNotSizable,@"NSViewNotSizable");
+    ADD_NSInteger_OBJECT(NSViewMinXMargin,@"NSViewMinXMargin");
+    ADD_NSInteger_OBJECT(NSViewWidthSizable,@"NSViewWidthSizable");
+    ADD_NSInteger_OBJECT(NSViewMaxXMargin,@"NSViewMaxXMargin");
+    ADD_NSInteger_OBJECT(NSViewMinYMargin,@"NSViewMinYMargin");
+    ADD_NSInteger_OBJECT(NSViewHeightSizable,@"NSViewHeightSizable");
+    ADD_NSInteger_OBJECT(NSViewMaxYMargin,@"NSViewMaxYMargin");
 
     return dict;
 }

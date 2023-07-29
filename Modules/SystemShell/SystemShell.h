@@ -26,6 +26,7 @@
 
 @interface SystemShell:NSObject
 + sharedSystemShell;
-- executeCommand:(NSString*)cmd;
-- executeCommand:(NSString*)cmd withArguments:(NSArray*)args;
+- (NSString*) executeCommand:(NSString*)cmd;
+- (NSString*) executeCommand:(NSString*)cmd withArguments:(NSArray*)args;
+- (NSString*) readString:(NSString*)path;
 @end

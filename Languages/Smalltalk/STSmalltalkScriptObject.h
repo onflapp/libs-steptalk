@@ -30,6 +30,16 @@
 @class STCompiledScript;
 @class STEnvironment;
 
+typedef struct	{
+  int		offset;
+  unsigned	size;
+  const char	*type;
+  const char	*qtype;
+  unsigned	align;
+  unsigned	qual;
+  BOOL		isReg;
+} NSArgumentInfo;
+
 @interface STSmalltalkScriptObject:NSObject
 {
     NSString              *name;
