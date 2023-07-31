@@ -92,6 +92,17 @@ Comparison operators (NSObject)
     >=             isGreatherOrEqualThan:
 
 
+Binary operators (NSNumber)
+-------------------------------
+
+and:
+or:
+not:
+
+For example:
+((x > 2) and: (y > 2)) ifTrue: []
+
+
 Target type    Selector    Argument Type     Real Selector
 -----------------------------------------------------------------------
 NSArray          @         NSNumber          objectAtIndex:
@@ -115,7 +126,6 @@ NSMutableSet     -=        any               removeObject:
 NSDate           -         NSDate            timeIntervalSinceDate:
 
 NSNumber         +,-,*,/   NSNumber          add:,subtract:,multiply:,divide:
-
 
 
 Special selectors to create objects from two NSNumbers
