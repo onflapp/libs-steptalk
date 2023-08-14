@@ -72,6 +72,9 @@ endif
 include $(GNUSTEP_MAKEFILES)/bundle.make
 -include GNUMakefile.postamble
 
-STGrammar.m: STGrammar.y
-	$(BISON) -p STC -o $@ $<
+### use generated code from the source repository
+# original gramma needs to be migrated to bison v3.x
+#
+#STGrammar.m: STGrammar.y
+#	$(BISON) -p STC -o $@ $<
 
