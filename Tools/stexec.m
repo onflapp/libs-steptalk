@@ -130,6 +130,7 @@
 }
 - (int)processOption:(NSString *)option
 {
+    enableFull = YES;
     if ([@"type" hasPrefix:option])
     {
         ASSIGN(typeName, [self nextArgument]);
@@ -157,9 +158,9 @@
                         format:@"Host name expected"];
         }
     }
-    else if ([@"full" hasPrefix:option])
+    else if ([@"nofull" hasPrefix:option])
     {
-        enableFull = YES;
+        enableFull = NO;
     }
     else
     {
@@ -180,7 +181,7 @@
 "Usage: stexec [options] [script] [args ...] [ , script ...]\n"
 "   Options:\n"
 "%s"
-"   -full               enable full scripting\n"
+"   -nofull             disable full scripting\n"
 "   -environment env    use scripting environment with name env\n"
 "   -host host          find environment on host\n"
 "   -type desc          use environment description with name 'desc'\n"
