@@ -68,6 +68,13 @@
 @end
 
 @implementation Executor
+- (id) init
+{
+    self = [super init];
+    enableFull = YES;
+    return self;
+}
+
 - (void)createConversation
 {
     STEnvironmentDescription *desc;
@@ -130,7 +137,6 @@
 }
 - (int)processOption:(NSString *)option
 {
-    enableFull = YES;
     if ([@"type" hasPrefix:option])
     {
         ASSIGN(typeName, [self nextArgument]);

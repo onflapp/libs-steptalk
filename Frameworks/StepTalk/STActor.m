@@ -16,6 +16,7 @@
 #import "NSInvocation+additions.h"
 #import "STEngine.h"
 #import "STEnvironment.h"
+#import "STLanguageManager.h"
 #import "STExterns.h"
 #import "STObjCRuntime.h"
 
@@ -26,6 +27,7 @@
 #import <Foundation/NSInvocation.h>
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSDebug.h>
 
 @implementation STActor
 /** Return new instance of script object without any instance variables */
@@ -35,7 +37,8 @@
 }
 + actor
 {
-    return AUTORELEASE([[self alloc] init]);
+    STEnvironment *env = [STEnvironment sharedEnvironment]; 
+    return AUTORELEASE([[self alloc] initWithEnvironment:env]);
 }
 - init
 {
@@ -119,6 +122,20 @@
     }
 }
 
+- (id <STMethod>)addMethodWithSource:(NSString *)source
+{
+    STLanguageManager *langManager = [STLanguageManager defaultManager];
+    NSString *langName = [langManager defaultLanguage];
+    STEngine *engine = [STEngine engineForLanguage:langName];
+
+    id <STMethod>method = [engine methodFromSource:source
+                                    forReceiver:self
+                                      inContext:environment];
+    if (method) {
+        [self addMethod:method];
+    }
+    return method;
+}
 - (void)addMethod:(id <STMethod>)aMethod
 {
     [methodDictionary setObject:aMethod forKey:[aMethod methodName]];
@@ -155,6 +172,7 @@ some other, more clever mechanism. */
 }
 - (BOOL)respondsToSelector:(SEL)aSelector
 {
+    NSDebugLLog(@"STActor", @"respondsToSelector %@", NSStringFromSelector(aSelector));
     if ([super respondsToSelector:(SEL)aSelector])
     {
         return YES;
@@ -165,6 +183,7 @@ some other, more clever mechanism. */
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)sel
 {
+    NSDebugLLog(@"STActor", @"methodSignatureForSelector %@", NSStringFromSelector(sel));
     NSMethodSignature *signature = nil;
     
     signature = [super methodSignatureForSelector:sel];
@@ -188,6 +207,7 @@ some other, more clever mechanism. */
     NSUInteger      count;
     id              retval = nil;
 
+    NSDebugLLog(@"STActor", @"forwardInvocation %@", invocation);
     method = [methodDictionary objectForKey:methodName];
     
     if (!method)

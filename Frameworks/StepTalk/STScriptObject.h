@@ -31,6 +31,7 @@
 
 - (NSArray *)instanceVariableNames;
 
+- (id <STMethod>)addMethodWithSource:(NSString *)source;
 - (void)addMethod:(id <STMethod>)aMethod;
 - (id <STMethod>)methodWithName:(NSString *)aName;
 - (void)removeMethod:(id <STMethod>)aMethod;

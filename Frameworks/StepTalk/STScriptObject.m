@@ -5,6 +5,7 @@
 #import "NSInvocation+additions.h"
 #import "STEnvironment.h"
 #import "STEngine.h"
+#import "STLanguageManager.h"
 #import "STExterns.h"
 #import "STObjCRuntime.h"
 
@@ -54,7 +55,20 @@
 {
     return [ivars allKeys];
 }
+- (id <STMethod>)addMethodWithSource:(NSString *)source
+{
+    STLanguageManager *langManager = [STLanguageManager defaultManager];
+    NSString *langName = [langManager defaultLanguage];
+    STEngine *engine = [STEngine engineForLanguage:langName];
 
+    id <STMethod>method = [engine methodFromSource:source
+                                    forReceiver:self
+                                      inContext:environment];
+    if (method) {
+        [self addMethod:method];
+    }
+    return method;
+}
 - (void)addMethod:(id <STMethod>)aMethod
 {
     [methodDictionary setObject:aMethod forKey:[aMethod methodName]];

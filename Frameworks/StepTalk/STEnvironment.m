@@ -74,7 +74,13 @@ NSMutableDictionary *selectorTypesCache = nil;
 
 + (STEnvironment *)environmentWithDefaultDescription
 {
-    return AUTORELEASE([[self alloc] initWithDefaultDescription]);
+    STEnvironment *env = [[self alloc] initWithDefaultDescription];
+    if (sharedEnvironment == nil)
+    {
+        sharedEnvironment = env;
+        return env;
+    }
+    else return AUTORELEASE(env);
 }
 
 /**
@@ -83,7 +89,13 @@ NSMutableDictionary *selectorTypesCache = nil;
  */
 + environmentWithDescription:(STEnvironmentDescription *)aDescription
 {
-    return AUTORELEASE([[self alloc] initWithDescription:aDescription]);
+    STEnvironment *env = [[self alloc] initWithDescription:aDescription];
+    if (sharedEnvironment == nil)
+    {
+        sharedEnvironment = env;
+        return env;
+    }
+    else return AUTORELEASE(env);
 }
 
 /**

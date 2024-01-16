@@ -1,0 +1,5 @@
+{
+    ScriptingInfoClass = SimpleUIModule;
+    Classes = (
+    );
+}
