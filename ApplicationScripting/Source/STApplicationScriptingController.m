@@ -45,6 +45,8 @@
 #import "NSObject+NibLoading.h"
 #import "NSApplication+additions.h"
 
+#define SCRIPT_ITEM_TAG 61452
+
 @implementation STApplicationScriptingController
 - init
 {
@@ -55,6 +57,7 @@
         info = [STBundleInfo infoForBundle:[NSBundle mainBundle]];
         objectRefereceDict = RETAIN([info objectReferenceDictionary]);
 
+        [self createScriptsPanel];
         [self createScriptsMenu];
     }
     return self;
@@ -106,10 +109,36 @@
     return [target scriptingEnvironment];
 }
 
+- (void)updateScriptItems
+{
+    NSMutableArray* toremove = [NSMutableArray array];
+    for (NSMenuItem* it in [scriptingMenu itemArray]) {
+        if ([it tag] == SCRIPT_ITEM_TAG) {
+            [toremove addObject:it];
+        }
+    }
+    for (NSMenuItem* it in toremove) {
+        [scriptingMenu removeItem:it];
+    }
+
+    for (STFileScript *it in [scriptsPanel scripts]) {
+        NSString *title = [it localizedName];
+        NSString *key = [it menuKey];
+        NSMenuItem *item = [scriptingMenu addItemWithTitle:title
+                                                    action:@selector(runMenuItem:) 
+                                             keyEquivalent:(key ? key : @"")];
+        [item setTarget:self];
+        [item setRepresentedObject:it];
+        [item setTag:SCRIPT_ITEM_TAG];
+    }
+}
+
 - (void)createScriptsMenu
 {
     NSMenu *mainMenu = [NSApp mainMenu];
     if (!mainMenu) return;
+
+    [scriptsPanel update:self];
 
     NSInteger i = [mainMenu indexOfItemWithTitle:@"Scripts"];
     if (i > 0) {
@@ -127,6 +156,7 @@
 
         [item setSubmenu:menu];
         [self setScriptingMenu:menu];
+        [self updateScriptItems];
     }
 }
 
@@ -198,6 +228,14 @@
                 [localException raise];
             }
         NS_ENDHANDLER
+    }
+}
+
+- (void)runMenuItem:(id) sender
+{
+    STFileScript* script = [sender representedObject];
+    if (script) {
+        [self executeScript:script];
     }
 }
 

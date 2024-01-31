@@ -38,6 +38,7 @@
 - initWithFile:(NSString *)aFile;
 - (NSString *)fileName;
 - (NSString *)scriptName;
+- (NSString *)menuKey;
 - (NSString *)localizedName;
 - (NSString *)scriptDescription;
 - (NSComparisonResult)compareByLocalizedName:(STFileScript *)aScript;

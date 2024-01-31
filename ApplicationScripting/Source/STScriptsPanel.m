@@ -175,6 +175,11 @@ STScriptsPanel *sharedScriptsPanel = nil;
     }
 }
 
+- (NSArray *) scripts;
+{
+    return scripts;
+}
+
 - (void)update:(id)sender
 {
     RELEASE(scripts);
@@ -185,6 +190,7 @@ STScriptsPanel *sharedScriptsPanel = nil;
     
     [scriptList reloadColumn:0];
     [self selectScript:nil];
+    [delegate updateScriptItems];
 }
 
 - (STFileScript *)selectedScript

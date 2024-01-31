@@ -50,6 +50,7 @@
 - (void) showHelp: (id)sender;
 
 - (STFileScript *) selectedScript;
+- (NSArray *) scripts;
 
 - (void) setDelegate: (id)anObject;
 - (id) delegate;
