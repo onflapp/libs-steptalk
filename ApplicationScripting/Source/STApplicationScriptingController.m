@@ -123,6 +123,9 @@
 
     for (STFileScript *it in [scriptsPanel scripts]) {
         NSString *title = [it localizedName];
+        if ([title hasPrefix:@"_"])
+            continue;
+
         NSString *key = [it menuKey];
         NSMenuItem *item = [scriptingMenu addItemWithTitle:title
                                                     action:@selector(runMenuItem:) 

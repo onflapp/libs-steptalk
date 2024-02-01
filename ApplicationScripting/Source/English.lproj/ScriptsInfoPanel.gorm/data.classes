@@ -1,0 +1,38 @@
+{
+    "## Comment" = "Do NOT change this file, Gorm maintains it";
+    FirstResponder = {
+	Actions = (
+	    "save:",
+	    "orderFrontFontPanel:",
+	    "orderFrontSharedMemoryPanel:"
+	);
+	Super = NSObject;
+    };
+    STScriptsInfoPanel = {
+	Actions = (
+	    "save:"
+	);
+	Outlets = (
+	    "_panel",
+	    keyField,
+	    nameField,
+	    descriptionField
+	);
+	Super = NSPanel;
+    };
+    STScriptsPanel = {
+	Actions = (
+	    "run:",
+	    "command:",
+	    "selectScript:"
+	);
+	Outlets = (
+	    scriptList,
+	    descriptionText,
+	    runButton,
+	    commandMenu,
+	    "_panel"
+	);
+	Super = NSPanel;
+    };
+}

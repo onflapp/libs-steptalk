@@ -35,6 +35,7 @@ ApplicationScripting_OBJC_FILES = \
     STAppDelegateProxy.m \
     STEnvironment+additions.m \
     STScriptsPanel.m \
+    STScriptsInfoPanel.m \
     NSTextView+ScriptExecution.m \
     STTranscript.m 
 
@@ -48,6 +49,7 @@ ApplicationScripting_RESOURCE_FILES = ScriptingInfo.plist
 
 ApplicationScripting_LOCALIZED_RESOURCE_FILES = \
         ScriptsPanel.gorm \
+        ScriptsInfoPanel.gorm \
         TranscriptWindow.gorm \
         ScriptingMenu.gorm \
 #        ApplicationScripting.xlp \

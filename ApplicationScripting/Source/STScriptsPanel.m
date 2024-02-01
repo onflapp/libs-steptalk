@@ -39,6 +39,7 @@
 
 #import "NSObject+NibLoading.h"
 #import "STApplicationScriptingController.h"
+#import "STScriptsInfoPanel.h"
 
 STScriptsPanel *sharedScriptsPanel = nil;
 
@@ -104,6 +105,7 @@ STScriptsPanel *sharedScriptsPanel = nil;
 {
     RELEASE(scripts);
     RELEASE(scriptsManager);
+    RELEASE(delegate);
     [super dealloc];
 }
 - (void)setDelegate:(id)anObject
@@ -149,7 +151,9 @@ STScriptsPanel *sharedScriptsPanel = nil;
     {
     case 1: [self update:nil]; break;
     case 2: [self browse:nil]; break;
-    case 3: [self showHelp:nil]; break;
+    case 3: [self edit:nil]; break;
+    case 4: [self editInfo:nil]; break;
+    case 5: [self showHelp:nil]; break;
     }
 }
 - (void)browse:(id)sender
@@ -226,6 +230,27 @@ STScriptsPanel *sharedScriptsPanel = nil;
     name = [[scripts objectAtIndex:row] localizedName];
     [cell setStringValue:name];
 }
+
+- (void)edit:(id)sender
+{
+    NSString *scriptPath = [[self selectedScript] fileName]; 
+    if (scriptPath)
+    {
+        [[NSWorkspace sharedWorkspace] openFile:scriptPath];
+    }
+}
+
+- (void)editInfo:(id)sender
+{
+    NSString *scriptPath = [[self selectedScript] fileName]; 
+    if (scriptPath)
+    {
+        STScriptsInfoPanel *infoPanel = [STScriptsInfoPanel sharedScriptsInfoPanel];
+        [infoPanel setDelegate:self];
+        [infoPanel orderFrontAndEditScriptInfo:scriptPath];
+    }
+}
+
 - (void)showHelp:(id)sender
 {
     NSBundle *bundle = [NSBundle mainBundle];

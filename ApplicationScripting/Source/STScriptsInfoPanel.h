@@ -1,11 +1,8 @@
 /**
-    STScriptsPanel
+    STScriptsInfoPanel
   
-    Copyright (c)2002 Stefan Urbanek
+    Copyright (c)2024 OnFlApp
   
-    Written by: Stefan Urbanek <urbanek@host.sk>
-    Date: 2002 Mar 15
- 
     This file is part of the StepTalk project.
  
     This library is free software; you can redistribute it and/or
@@ -26,32 +23,23 @@
 
 #import <AppKit/NSPanel.h>
 
-@class STScriptsManager;
-@class STFileScript;
-@class NSPopUpButton;
+#import <AppKit/NSTextField.h>
+#import <AppKit/NSTextView.h>
 
-@interface STScriptsPanel : NSPanel
+@interface STScriptsInfoPanel : NSPanel
 {
-    id             scriptList;
-    id             descriptionText;
-    id             runButton;
-    NSPopUpButton *commandMenu;
     id             _panel;
-    
+    NSTextField   *nameField;
+    NSTextField   *keyField;
+    NSTextView    *descriptionField;
+
     id             delegate;
 
-    STScriptsManager *scriptsManager;
-    NSArray          *scripts;
+    NSString      *scriptInfoPath;
 }
-- (void) run: (id)sender;
-- (void) command: (id)sender;
-- (void) update: (id)sender;
-- (void) browse: (id)sender;
-- (void) showHelp: (id)sender;
-- (void) editInfo: (id)sender;
-
-- (STFileScript *) selectedScript;
-- (NSArray *) scripts;
++ (id) sharedScriptsInfoPanel;
+- (void) save:(id)sender;
+- (void) orderFrontAndEditScriptInfo:(NSString*) path;
 
 - (void) setDelegate: (id)anObject;
 - (id) delegate;
