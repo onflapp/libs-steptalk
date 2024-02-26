@@ -27,9 +27,9 @@
 
 @interface SimpleUI:NSObject {
     NSMutableDictionary* interfaceObjects;
-    NSMutableArray* interfaceSearchPath;
 }
-+ sharedSimpleUI;
++ (id) sharedSimpleUI;
++ (NSString*) scriptsPath;
 
-- (id) interfaceWithFile:(NSString*) file;
+- (id) actorWithInterfaceFile:(NSString*) file;
 @end

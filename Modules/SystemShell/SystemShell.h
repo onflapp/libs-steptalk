@@ -23,9 +23,11 @@
  */
 
 #import <Foundation/NSObject.h>
+#import <AppKit/AppKit.h>
 
 @interface SystemShell:NSObject
-+ sharedSystemShell;
++ (id) sharedSystemShell;
++ (NSString*) scriptsPath;
 - (NSString*) executeCommand:(NSString*)cmd;
 - (NSString*) executeCommand:(NSString*)cmd withArguments:(NSArray*)args;
 - (NSString*) readString:(NSString*)path;

@@ -26,6 +26,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SimpleUIProxy.h"
+#import <StepTalk/STBundleInfo.h>
 #import "../../Frameworks/StepTalk/STActor.h"
 
 static SimpleUI *sharedSimpleUI;
@@ -34,7 +35,7 @@ static SimpleUI *sharedSimpleUI;
 + (void)initialize
 {
 }
-+ sharedSimpleUI
++ (id) sharedSimpleUI
 {
     if(!sharedSimpleUI)
     {
@@ -44,10 +45,23 @@ static SimpleUI *sharedSimpleUI;
     return sharedSimpleUI;
 }
 
++ (NSString*) scriptsPath
+{
+    NSString* base = nil;
+    if ([NSApp respondsToSelector:@selector(applicationNameForScripting)]) {
+        NSString* sname = [NSApp applicationNameForScripting];
+        if (sname) {
+            base = [NSString stringWithFormat:@"~/Library/StepTalk/Scripts/%@", sname];
+            base = [base stringByExpandingTildeInPath];
+            return base;
+        }
+    }
+    return @"";
+}
+
 - (id) init {
     self = [super init];
     interfaceObjects = [[NSMutableDictionary alloc] init];
-    interfaceSearchPath = [[NSMutableArray alloc] init];
     return self;
 }
 
@@ -56,14 +70,17 @@ static SimpleUI *sharedSimpleUI;
     [super dealloc];
 }
 
-- (NSString*) findInterfaceFile:(NSString*) file {
-    NSFileManager* fm = [NSFileManager defaultManager];
-    return file;
-}
+- (id) actorWithInterfaceFile:(NSString*) file {
+    if ([file hasPrefix:@"/"] == NO)
+        file = [[SimpleUI scriptsPath] stringByAppendingPathComponent:file];
 
-- (id) interfaceWithFile:(NSString*) file {
     id io = [[interfaceObjects valueForKey:file] delegate];
-    if (io) return io;
+    if (io) {
+        for (NSString* key in [io methodNames]) {
+            [io removeMethodWithName:key];
+        }
+        return io;
+    }
 
     SimpleUIProxy* proxy = [[SimpleUIProxy alloc] init];
     NSMutableDictionary* o = [NSMutableDictionary dictionary];

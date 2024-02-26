@@ -21,18 +21,10 @@
 @interface SimpleUIProxy : NSObject {
    NSMutableDictionary* controls;
 
-   NSView* iconView;
-   NSWindow* window;
-   NSMenu* menu;
-
    id delegate;
 }
 
 - (id) init;
-
-- (NSView*) iconView;
-- (NSWindow*) window;
-- (NSMenu*) menu;
 
 - (NSDictionary*) controls;
 

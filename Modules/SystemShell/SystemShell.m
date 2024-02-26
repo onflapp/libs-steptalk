@@ -32,7 +32,7 @@ static SystemShell *sharedSystemShell;
 + (void)initialize
 {
 }
-+ sharedSystemShell
++ (id) sharedSystemShell
 {
     if(!sharedSystemShell)
     {
@@ -41,6 +41,21 @@ static SystemShell *sharedSystemShell;
     
     return sharedSystemShell;
 }
+
++ (NSString*) scriptsPath
+{
+    NSString* base = nil;
+    if ([NSApp respondsToSelector:@selector(applicationNameForScripting)]) {
+        NSString* sname = [NSApp applicationNameForScripting];
+        if (sname) {
+            base = [NSString stringWithFormat:@"~/Library/StepTalk/Scripts/%@", sname];
+            base = [base stringByExpandingTildeInPath];
+            return base;
+        }
+    }
+    return @"";
+}
+
 - (NSString*) executeCommand:(NSString*)cmd 
 {
     return [self executeCommand:cmd withArguments:nil];
@@ -50,6 +65,11 @@ static SystemShell *sharedSystemShell;
     NSPipe* pipe = [NSPipe pipe];
     NSFileHandle* fh = [pipe fileHandleForReading];
     NSTask* task = [[NSTask alloc] init];
+
+    if ([cmd hasPrefix:@"/"] == NO)
+        cmd = [[SystemShell scriptsPath] stringByAppendingPathComponent:cmd];
+
+    NSLog(@"execute %@ %@", cmd, args);
 
     [task setLaunchPath:cmd];
     if([args count]) 

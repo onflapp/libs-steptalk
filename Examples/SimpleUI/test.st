@@ -1,9 +1,15 @@
 Environment loadModule:'SimpleUI'.
 Transcript showLine:UI.
-x := UI interfaceWithFile:'/home/oflorian/x.app/Resources/Launcher.gorm'.
+
+" return STActor "
+
+x := UI actorWithInterfaceFile:'test.gorm'.
+
 x addMethodWithSource:'
   doSomething:sender
+    Transcript showLine:TEXTFIELD.
     Transcript showLine:sender.
 '.
 
+Transcript showLine:x instanceVariableNames.
 NSApplication sharedApplication run.

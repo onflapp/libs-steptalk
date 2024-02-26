@@ -35,18 +35,6 @@
   [super dealloc];
 }
 
-- (NSView*) iconView {
-  return iconView;
-}
-
-- (NSWindow*) window {
-  return window;
-}
-
-- (NSMenu*) menu {
-  return menu;
-}
-
 - (void) setDelegate:(id) del {
   ASSIGN(delegate, del);
 }
@@ -85,21 +73,15 @@
   id val = nil;
   [anInvocation getArgument:&val atIndex:2];
 
-  if ([sel isEqualToString:@"setMenu:"]) {
-    ASSIGN(menu, val);
-  }
-  else if ([sel isEqualToString:@"setWindow:"]) {
-    ASSIGN(window, val);
-  }
-  else if ([sel isEqualToString:@"setIconView:"]) {
-    ASSIGN(iconView, val);
-  }
-  else if ([sel hasPrefix:@"set"]) {
+  if ([sel hasPrefix:@"set"]) {
     NSString* key = [sel substringFromIndex:3];
     key = [key substringToIndex:[key length] - 1];
     key = [key uppercaseString];
 
     if ([val isKindOfClass:[NSControl class]]) {
+      [controls setValue:val forKey:key];
+    }
+    else if ([val isKindOfClass:[NSWindow class]]) {
       [controls setValue:val forKey:key];
     }
   }
