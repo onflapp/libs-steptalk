@@ -53,6 +53,7 @@
     NSRange             range = [self selectedRange];
     id                  retval = nil;
     BOOL                appendResult = YES;
+    BOOL                hasFocus = ([[self window] firstResponder] == self);
     
     NSLog(@"Do and Show!");
 
@@ -70,15 +71,18 @@
         {
             NSRange r = [self selectedRange];
             r.location = r.location + [selectedString length];
-            r.length = [retstr length] + 1;
+            r.length = [retstr length];
 
             if (appendResult)
             {
+                r.length += 1;
                 retstr = [NSString stringWithFormat:@"%@\n%@", selectedString, retstr];
             }
 
             [self insertText:retstr];
-            [self setSelectedRange:r];
+
+            if (hasFocus)
+                [self setSelectedRange:r];
         }
     }
     else

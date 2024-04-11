@@ -74,12 +74,21 @@ STAppScriptingProxy *sharedAppScriptingProxy = nil;
 {
     if ((self = [super init]) != nil)
     {
+        savedMenuFrames = [[NSMutableDictionary alloc] init];
+
+        NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+        [nc addObserver: self
+               selector: @selector(__restoreMenuFrames:)
+                   name: NSApplicationDidResignActiveNotification 
+                 object: NSApp];
+
     }
     return self;
 }
 
 - (void)dealloc
 {
+    [savedMenuFrames release];
     [currentFileScript release];
     [super dealloc];
 }
@@ -99,6 +108,80 @@ STAppScriptingProxy *sharedAppScriptingProxy = nil;
     [self executeScript:[sender representedObject]];
 }
 
+- (void)__saveMenuFrame:(NSMenu *) menu
+{
+    NSString *key   = [menu _locationKey];
+    NSString *frame = [[menu window] stringWithSavedFrame];
+
+    if (key == nil)
+        return;
+
+    if ([savedMenuFrames valueForKey: key] == nil)
+    {
+        [savedMenuFrames setValue: frame forKey: key];
+    }
+}
+
+/*
+ * we need to restore the old auto save frames
+ * to take into consideration removed/added menu items
+ * if we don't do that, menu might end up placed out of 
+ * the screen after app's restart
+ */
+
+- (void)__restoreMenuFrames:(id) notification
+{
+    NSUserDefaults	    *defaults;
+    NSMutableDictionary	*menuLocations;
+    NSString		        *savedLoc;
+    NSString		        *currentLoc;
+    NSInteger            changes = 0;
+
+    defaults = [NSUserDefaults standardUserDefaults];
+    menuLocations = [defaults objectForKey: @"NSMenuLocations"];
+    if ([menuLocations isKindOfClass: [NSDictionary class]])
+        menuLocations = AUTORELEASE([menuLocations mutableCopy]);
+    else
+        return;
+
+    for (NSString *key in [menuLocations allKeys])
+    {
+        currentLoc = [menuLocations valueForKey: key];
+        savedLoc = [savedMenuFrames valueForKey: key];
+
+        if (savedLoc && [currentLoc isEqualToString: savedLoc] == NO)
+        {
+            NSArray *s = [savedLoc componentsSeparatedByString:@" "];
+            NSArray *c = [currentLoc componentsSeparatedByString:@" "];
+
+            if ([s count] == 10 && [s count] == [c count])
+            {
+                NSMutableArray *n = [c mutableCopy];
+                //NSInteger sy = [[s objectAtIndex: 2] integerValue];
+                NSInteger sh = [[s objectAtIndex: 3] integerValue];
+                NSInteger cy = [[c objectAtIndex: 2] integerValue];
+                NSInteger ch = [[c objectAtIndex: 3] integerValue];
+
+                NSInteger d = sh - ch;
+                if (d > 0)
+                {
+                    [n replaceObjectAtIndex: 2 withObject: [NSString stringWithFormat:@"%ld", (cy - d)]];
+                    [n replaceObjectAtIndex: 3 withObject: [NSString stringWithFormat:@"%ld", (sh)]];
+
+                    [menuLocations setValue: [n componentsJoinedByString:@" "] forKey: key];
+                    [n release];
+                    changes++;
+                }
+            }
+        }
+    }
+
+    if (changes)
+    {
+        [defaults setObject:menuLocations forKey: @"NSMenuLocations"];
+    }
+}
+
 - (void)activate
 {
     [NSApp activateIgnoringOtherApps:YES];
@@ -114,7 +197,7 @@ STAppScriptingProxy *sharedAppScriptingProxy = nil;
     [NSApp hide:self];
 }
 
-- (void)open:(NSString*) file
+- (void)open:(NSString *) file
 {
     id del = [NSApp delegate];
     [del application: NSApp openFile: file];
@@ -125,12 +208,36 @@ STAppScriptingProxy *sharedAppScriptingProxy = nil;
     [NSApp sendAction:@selector(openDocument:) to:nil from:self];
 }
 
-- (void)addScript:(NSString *) script afterMenu:(NSString *) name
+- (void)delay:(NSTimeInterval) tm
+{
+    NSDate* limit = [NSDate dateWithTimeIntervalSinceNow:tm];
+    [[NSRunLoop currentRunLoop] runUntilDate: limit];
+}
+
+- (NSMenuItem*)menuItem:(NSString *) name
+{
+    return __findMenuItem(name, [NSApp mainMenu]);
+}
+
+- (void)removeMenuItem:(NSString *) name
+{
+    NSMenuItem *mi = __findMenuItem(name, [NSApp mainMenu]);
+    if (mi)
+    {
+        NSMenu *menu = [mi menu];
+        [self __saveMenuFrame:menu];
+        [menu removeItem:mi];
+    }
+}
+
+- (void)addScript:(NSString *) script afterMenuItem:(NSString *) name
 {
     NSMenuItem *mi = __findMenuItem(name, [NSApp mainMenu]);
     NSMenu *menu = [mi menu];
 
     if (!menu) menu = [NSApp scriptingMenu];
+
+    [self __saveMenuFrame:menu];
 
     id si = [menu addItemWithTitle:script
                             action:@selector(__execScriptInMenu:)
@@ -140,7 +247,7 @@ STAppScriptingProxy *sharedAppScriptingProxy = nil;
     [si setRepresentedObject:script];
 }
 
-- (void)executeMenuAction:(NSString *) name
+- (void)executeMenuItem:(NSString *) name
 {
     NSMenuItem *mi = __findMenuItem(name, [NSApp mainMenu]);
     if (mi)

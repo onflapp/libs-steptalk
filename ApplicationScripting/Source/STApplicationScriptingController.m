@@ -136,6 +136,16 @@
     }
 }
 
+- (void)executeScriptItemsWithPrefix:(NSString*) pref
+{
+    for (STFileScript *it in [scriptsPanel scripts]) {
+        NSString *title = [it localizedName];
+        if ([title hasPrefix:pref]) {
+            [self executeScript:it];
+        }
+    }
+}
+
 - (void)createScriptsMenu
 {
     NSMenu *mainMenu = [NSApp mainMenu];
@@ -160,6 +170,7 @@
         [item setSubmenu:menu];
         [self setScriptingMenu:menu];
         [self updateScriptItems];
+        [self executeScriptItemsWithPrefix:@"_init"];
     }
 }
 
@@ -239,6 +250,19 @@
     STFileScript* script = [sender representedObject];
     if (script) {
         [self executeScript:script];
+    }
+}
+
+- (void)handleNotification:(NSNotification *) not
+{
+    NSString *name = [not name];
+    if ([name isEqualToString:@"NSApplicationDidBecomeActiveNotification"]) 
+    {
+        [self executeScriptItemsWithPrefix:@"_activate"];
+    }
+    else if ([name isEqualToString:@"NSApplicationDidResignActiveNotification"]) 
+    {
+        [self executeScriptItemsWithPrefix:@"_deactivate"];
     }
 }
 

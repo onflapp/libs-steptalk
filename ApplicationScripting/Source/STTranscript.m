@@ -131,18 +131,39 @@ static NSDictionary  *normalTextAttributes;
 - showError:(NSString *)errorText
 {
     NSAttributedString *astring;
+    BOOL                appendResult = YES;
+    BOOL                hasFocus = ([[textView window] firstResponder] == textView);
+    NSRange             r = [textView selectedRange];
     
+    r.location = r.location + r.length;
+    r.length = 0;
+
+    // reset selection
+    if (hasFocus)
+        [textView setSelectedRange:r];
+    
+    if (appendResult) 
+    {
+        [textView insertText:@"\n"];
+        r.length += 1;
+    }
+
     astring = [[NSAttributedString alloc] initWithString:errorText
                                               attributes:errorTextAttributes];
     [textView insertText:astring];
+    r.length += [astring length];
 
     RELEASE(astring);
 
     astring = [[NSAttributedString alloc] initWithString:@"\n"
                                               attributes:normalTextAttributes];
     [textView insertText:astring];
+    r.length += [astring length];
 
     RELEASE(astring);
+
+    if (hasFocus)
+        [textView setSelectedRange:r];
     
     return self;
 }

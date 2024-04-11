@@ -81,6 +81,19 @@ static STApplicationScriptingController *scriptingController = nil;
 
     /* FIXME: use info */
     scriptingController = [[STApplicationScriptingController alloc] init];
+
+    [[NSNotificationCenter defaultCenter]
+                         addObserver:scriptingController
+                            selector:@selector(handleNotification:)
+                                name:NSApplicationDidBecomeActiveNotification
+                              object:nil];
+
+    [[NSNotificationCenter defaultCenter]
+                         addObserver:scriptingController
+                            selector:@selector(handleNotification:)
+                                name:NSApplicationDidResignActiveNotification
+                              object:nil];
+
     return YES;
 }
 

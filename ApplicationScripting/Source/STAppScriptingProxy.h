@@ -30,6 +30,7 @@
 @interface STAppScriptingProxy : NSObject
 {
     STFileScript *currentFileScript;
+    NSMutableDictionary *savedMenuFrames;
 }
 + sharedAppScriptingProxy;
 - (void)activate;
@@ -37,7 +38,12 @@
 - (void)hide;
 - (void)open:(NSString*) file;
 - (void)open;
-- (void)executeMenuAction:(NSString *) name;
+
+- (void)executeMenuItem:(NSString *) name;
+- (NSMenuItem*)menuItem:(NSString *) name;
+- (void)removeMenuItem:(NSString *) name;
+- (void)addScript:(NSString *) script afterMenuItem:(NSString *) name;
+
 - (NSArray *)windows;
 - (NSProcessInfo*) processInfo;
 
