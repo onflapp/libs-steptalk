@@ -52,6 +52,7 @@
     NSString           *selectedString;
     NSRange             range = [self selectedRange];
     id                  retval = nil;
+    BOOL                appendResult = YES;
     
     NSLog(@"Do and Show!");
 
@@ -64,7 +65,21 @@
     NSLog(@"Returned %@",retval);
     if([self isEditable])
     {
-        [self insertText:[retval description]];
+        NSString *retstr = [retval description];
+        if ([retstr length] > 0)
+        {
+            NSRange r = [self selectedRange];
+            r.location = r.location + [selectedString length];
+            r.length = [retstr length] + 1;
+
+            if (appendResult)
+            {
+                retstr = [NSString stringWithFormat:@"%@\n%@", selectedString, retstr];
+            }
+
+            [self insertText:retstr];
+            [self setSelectedRange:r];
+        }
     }
     else
     {
