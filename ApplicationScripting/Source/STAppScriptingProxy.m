@@ -76,11 +76,13 @@ STAppScriptingProxy *sharedAppScriptingProxy = nil;
     {
         savedMenuFrames = [[NSMutableDictionary alloc] init];
 
+        /*
         NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
         [nc addObserver: self
                selector: @selector(__restoreMenuFrames:)
                    name: NSApplicationDidResignActiveNotification 
                  object: NSApp];
+                 */
 
     }
     return self;
