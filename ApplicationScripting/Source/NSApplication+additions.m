@@ -94,6 +94,12 @@ static STApplicationScriptingController *scriptingController = nil;
                                 name:NSApplicationDidResignActiveNotification
                               object:nil];
 
+    if ([NSApp isActive]) {
+        id not = [NSNotification notificationWithName:NSApplicationDidBecomeActiveNotification
+                                               object:nil];
+        [scriptingController handleNotification:not];
+    }
+
     return YES;
 }
 

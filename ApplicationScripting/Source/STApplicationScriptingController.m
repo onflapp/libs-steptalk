@@ -170,7 +170,8 @@
         [item setSubmenu:menu];
         [self setScriptingMenu:menu];
         [self updateScriptItems];
-        //[self executeScriptItemsWithPrefix:@"_init"];
+
+        [self executeScriptItemsWithPrefix:@"_init"];
     }
 }
 
@@ -256,13 +257,19 @@
 - (void)handleNotification:(NSNotification *) not
 {
     NSString *name = [not name];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+
     if ([name isEqualToString:@"NSApplicationDidBecomeActiveNotification"]) 
     {
-        [self executeScriptItemsWithPrefix:@"_activate"];
+        [self performSelector:@selector(executeScriptItemsWithPrefix:)
+                   withObject:@"_activate"
+                   afterDelay:0.3];
     }
     else if ([name isEqualToString:@"NSApplicationDidResignActiveNotification"]) 
     {
-        [self executeScriptItemsWithPrefix:@"_deactivate"];
+        [self performSelector:@selector(executeScriptItemsWithPrefix:)
+                   withObject:@"_deactivate"
+                   afterDelay:0.3];
     }
 }
 

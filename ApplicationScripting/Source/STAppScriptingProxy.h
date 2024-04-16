@@ -30,7 +30,6 @@
 @interface STAppScriptingProxy : NSObject
 {
     STFileScript *currentFileScript;
-    NSMutableDictionary *savedMenuFrames;
 }
 + sharedAppScriptingProxy;
 - (void)activate;

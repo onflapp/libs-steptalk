@@ -29,9 +29,10 @@ BUNDLE_NAME = ApplicationScripting
 ApplicationScripting_OBJC_FILES = \
     NSApplication+additions.m \
     NSObject+NibLoading.m  \
+    NSMenu+ScriptProxy.m  \
     STAppScriptingSupport.m \
     STApplicationScriptingController.m \
-		STAppScriptingProxy.m \
+    STAppScriptingProxy.m \
     STAppDelegateProxy.m \
     STEnvironment+additions.m \
     STScriptsPanel.m \

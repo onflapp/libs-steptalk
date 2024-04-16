@@ -24,7 +24,7 @@
 
    */
 
-#import <Foundation/NSObject.h>
+#import <AppKit/AppKit.h>
 
 @class STScriptsPanel;
 @class STFileScript;
@@ -44,6 +44,8 @@
 
 - (void)orderFrontScriptsPanel:(id)sender;
 - (void)orderFrontTranscriptWindow:(id)sender;
+
+- (void)handleNotification:(NSNotification *) not;
 
 - (id)executeScript:(STFileScript *)script;
 - (id)executeScriptString:(NSString *)source
