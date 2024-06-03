@@ -56,6 +56,17 @@ static SystemShell *sharedSystemShell;
     return @"";
 }
 
++ (NSDictionary*) scriptEnvironment
+{
+    NSDictionary* env = [[NSProcessInfo processInfo] environment];
+    NSMutableDictionary* dict = [NSMutableDictionary dictionaryWithDictionary: env];
+    NSString* script_path = [SystemShell scriptsPath];
+    if (script_path)
+        [dict setValue:script_path forKey:@"SCRIPT_PATH"];
+
+    return dict;
+}
+
 - (NSString*) executeCommand:(NSString*)cmd 
 {
     return [self executeCommand:cmd withArguments:nil];
@@ -65,8 +76,9 @@ static SystemShell *sharedSystemShell;
     NSPipe* pipe = [NSPipe pipe];
     NSFileHandle* fh = [pipe fileHandleForReading];
     NSTask* task = [[NSTask alloc] init];
+    NSDictionary* env = [SystemShell scriptEnvironment];
 
-    if ([cmd hasPrefix:@"/"] == NO)
+    if ([cmd hasPrefix:@"./"] == YES)
         cmd = [[SystemShell scriptsPath] stringByAppendingPathComponent:cmd];
 
     NSLog(@"execute %@ %@", cmd, args);
@@ -76,6 +88,8 @@ static SystemShell *sharedSystemShell;
     {
         [task setArguments:args];
     }
+    
+    [task setEnvironment:env];
     [task setStandardOutput:pipe];
     [task launch];
 
