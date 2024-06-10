@@ -214,7 +214,8 @@ NSMutableDictionary *selectorTypesCache = nil;
     BOOL found = NO;
     unsigned int c;
     struct objc_method_description *list = protocol_copyMethodDescriptionList(p, NO, YES, &c);
-    for (int i = 0; i < c; i++) {
+    int i;
+    for (i = 0; i < c; i++) {
         struct objc_method_description m = list[i];
         NSString* name = NSStringFromSelector(m.name);
         NSString* types = [[[NSString alloc] initWithCString:m.types] autorelease];

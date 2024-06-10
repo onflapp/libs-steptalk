@@ -114,7 +114,8 @@
     if([[NSWorkspace sharedWorkspace] launchApplication:appName])
     {
         NSDebugLLog(@"STFinder", @"Connecting '%@'", name);
-        for (NSInteger i = 0; i < 20; i++) {
+        NSInteger i;
+        for (i = 0; i < 20; i++) {
             id app = [self connectApplicationWithName:name];
             if (app) return app;
 

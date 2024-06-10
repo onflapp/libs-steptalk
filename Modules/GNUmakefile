@@ -42,6 +42,7 @@ SUBPROJECTS = \
     SimpleTranscript \
     Foundation \
     ObjectiveC \
+    SimpleUI \
     SystemShell \
     GDL2 \
     $(APPKIT) \
